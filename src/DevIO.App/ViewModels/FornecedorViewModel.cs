@@ -1,6 +1,7 @@
 ﻿using DevIO.Business.Models;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevIO.App.ViewModels
 {

@@ -1,6 +1,7 @@
 ﻿using DevIO.App.Extensions;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevIO.App.ViewModels
 {
@@ -23,6 +24,7 @@ namespace DevIO.App.ViewModels
         public string Descricao { get; set; }
 
         [DisplayName("Imagem do Produto")]
+        [NotMapped]
         public IFormFile ImagemUpload { get; set; }
 
         public string Imagem { get; set; }
@@ -37,8 +39,10 @@ namespace DevIO.App.ViewModels
         [DisplayName("Ativo?")]
         public bool Ativo { get; set; }
 
+        [NotMapped]
         public FornecedorViewModel Fornecedor { get; set; }
 
+        [NotMapped]
         public IEnumerable<FornecedorViewModel> Fornecedores { get; set; }
     }
 }
