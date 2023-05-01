@@ -4,6 +4,9 @@ using DevIO.Data.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DevIO.App.Data;
+using DevIO.App.Configurations;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using static DevIO.App.Extensions.MoedaAttribute;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +20,7 @@ builder.Services.AddDbContext<MeuDbContext>(options =>
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+builder.Services.AddMvcConfiguration();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -28,7 +29,7 @@ builder.Services.AddScoped<MeuDbContext>();
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddScoped<IFornecedorRepository, FornecedorRepository>();
 builder.Services.AddScoped<IEnderecoRepository, EnderecoRepository>();
-
+builder.Services.AddSingleton<IValidationAttributeAdapterProvider, MoedaValidationAttributeAdapterProvider>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
@@ -52,6 +53,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseGlobalizationConfiguration();
 
 app.MapControllerRoute(
     name: "default",
