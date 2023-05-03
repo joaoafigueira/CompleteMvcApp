@@ -1,35 +1,27 @@
-using DevIO.Business.Interfaces;
 using DevIO.Data.Context;
-using DevIO.Data.Repository;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using DevIO.App.Data;
 using DevIO.App.Configurations;
-using Microsoft.AspNetCore.Mvc.DataAnnotations;
-using static DevIO.App.Extensions.MoedaAttribute;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+builder.Configuration
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", true, true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
+    .AddEnvironmentVariables();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+//Configure Services
+builder.Services.AddIdentityConfiguration(builder.Configuration);
 
 builder.Services.AddDbContext<MeuDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddMvcConfiguration();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.ResolveDependencies();
 
-builder.Services.AddScoped<MeuDbContext>();
-builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
-builder.Services.AddScoped<IFornecedorRepository, FornecedorRepository>();
-builder.Services.AddScoped<IEnderecoRepository, EnderecoRepository>();
-builder.Services.AddSingleton<IValidationAttributeAdapterProvider, MoedaValidationAttributeAdapterProvider>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
