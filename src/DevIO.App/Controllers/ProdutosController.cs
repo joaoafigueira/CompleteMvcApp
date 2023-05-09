@@ -60,7 +60,6 @@ namespace DevIO.App.Controllers
         [ClaimsAuthorize("Produto", "Adicionar")]
         [HttpPost]
         [Route("novo-produto")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProdutoViewModel produtoViewModel)
         {
             produtoViewModel = await PopularFornecedores(produtoViewModel);
@@ -97,7 +96,6 @@ namespace DevIO.App.Controllers
         [ClaimsAuthorize("Produto", "Editar")]
         [HttpPost]
         [Route("editar-produto/{id:guid}")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, ProdutoViewModel produtoViewModel)
         {
             if (id != produtoViewModel.Id) return NotFound();
@@ -148,7 +146,6 @@ namespace DevIO.App.Controllers
         [ClaimsAuthorize("Produto", "Excluir")]
         [Route("excluir-produto/{id:guid}")]
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var produto = await ObterProduto(id);

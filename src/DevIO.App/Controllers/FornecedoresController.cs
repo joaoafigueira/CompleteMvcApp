@@ -53,7 +53,6 @@ namespace DevIO.App.Controllers
 
         [ClaimsAuthorize("Fornecedor", "Adicionar")]
         [Route("novo-fornecedor")]
-        [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> Create(FornecedorViewModel fornecedorViewModel)
         {
@@ -115,7 +114,6 @@ namespace DevIO.App.Controllers
         [ClaimsAuthorize("Fornecedor", "Excluir")]
         [Route("excluir-fornecedor/{id:guid}")]
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var fornecedorViewModel = await ObterFornecedorEndereco(id);
@@ -154,7 +152,6 @@ namespace DevIO.App.Controllers
             return PartialView("_AtualizarEndereco", new FornecedorViewModel { Endereco = fornecedor.Endereco});
         }
 
-        [ValidateAntiForgeryToken]
         [ClaimsAuthorize("Fornecedor", "Editar")]
         [HttpPost]
         [Route("atualizar-endereco-fornecedor/{id:guid}")]
